@@ -1,0 +1,80 @@
+:host {
+  display: block;
+  height: 100%;
+}
+
+#app_wrapper {
+  min-height: 100vh;
+
+  .c-app-spacer {
+    flex: 1 1 auto;
+  }
+
+  .c-app-select--header {
+    width: 150px;
+  }
+
+  .ml-gap {
+    margin-left: 5px;
+
+    &--10 {
+      margin-left: 10px;
+    }
+  }
+
+  .c-app-container {
+    width: 100%;
+    height: calc(100vh - 64px);
+
+    .c-app-left-sidenav {
+      width: 350px;
+      overflow: hidden;
+      padding: 20px 5px;
+
+      &[style*="visibility: hidden"] {
+        display: block !important;
+        visibility: visible !important;
+        width: 60px;
+        z-index: 4;
+        transform: none;
+
+        .mat-drawer-inner-container {
+          overflow: hidden;
+        }
+      }
+
+      .c-app-date-picker {
+        &.c-app-sidenav-closed {
+          display: none;
+        }
+      }
+
+      .c-app-button {
+        min-width: 49px;
+        margin-bottom: 10px;
+        padding: 2px 15px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        &.c-app-sidenav-closed {
+          width: 49px;
+
+          .c-app-button-text {
+            display: none;
+          }
+        }
+      }
+    }
+
+    .c-app-event-container {
+      &.c-app-sidenav-opened {
+        margin-left: 350px !important;
+      }
+
+      &.c-app-sidenav-closed {
+        margin-left: 60px !important;
+      }
+    }
+  }
+}

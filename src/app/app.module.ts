@@ -1,20 +1,28 @@
-import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
+import { NgModule } from '@angular/core'
+import { BrowserModule } from '@angular/platform-browser'
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { CustomMaterialModule } from './core/material.module'
+import { FormsModule, ReactiveFormsModule } from '@angular/forms'
+import { AppRoutingModule } from './app-routing.module'
+import { AppComponent } from './app.component'
+import { MatNativeDateModule } from '@angular/material/core'
+import { HttpClientModule } from '@angular/common/http'
+import { AppState } from './app.service'
 
 @NgModule({
-  declarations: [
-    AppComponent
-  ],
+  declarations: [AppComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    FormsModule,
+    HttpClientModule,
+    MatNativeDateModule,
+    CustomMaterialModule,
+    ReactiveFormsModule,
   ],
-  providers: [],
-  bootstrap: [AppComponent]
+  providers: [AppState],
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

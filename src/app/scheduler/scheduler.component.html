@@ -1,0 +1,87 @@
+<div id="app_wrapper">
+  <mat-toolbar>
+    <button
+      mat-icon-button
+      mat-ripple
+      class="c-app-icon"
+      aria-label="Calendar App icon-button with menu icon"
+      (click)="sidenav.toggle()"
+    >
+      <mat-icon>menu</mat-icon>
+    </button>
+
+    <span>Calendar Test</span>
+
+    <button mat-raised-button class="ml-gap--10" (click)="SetToday()">
+      Today
+    </button>
+
+    <button
+      mat-icon-button
+      mat-flat-button
+      class="c-app-button ml-gap--10"
+      (click)="SetPrevNextDate(false)"
+    >
+      <mat-icon>arrow_back_ios_new</mat-icon>
+    </button>
+
+    <button
+      mat-icon-button
+      mat-flat-button
+      class="c-app-button ml-gap--10"
+      (click)="SetPrevNextDate(true)"
+    >
+      <mat-icon>arrow_forward_ios_new</mat-icon>
+    </button>
+
+    <span class="ml-gap--10">
+      {{ selectedDate | date: 'longDate' }}
+    </span>
+
+    <span class="c-app-spacer"></span>
+
+    <button mat-raised-button>
+      <mat-select
+        [(value)]="selectedViewType"
+        class="c-app-select--header"
+        (selectionChange)="ChangeViewType()"
+      >
+        <mat-option *ngFor="let type of types" [value]="type.value">
+          {{ type.viewValue }}
+        </mat-option>
+      </mat-select>
+    </button>
+  </mat-toolbar>
+
+  <mat-sidenav-container class="c-app-container" autosize>
+    <mat-sidenav
+      #sidenav
+      mode="side"
+      [(opened)]="opened"
+      class="c-app-left-sidenav"
+    >
+      <button
+        mat-raised-button
+        class="c-app-button"
+        [ngClass]="eventContentClass"
+      >
+        <mat-icon>add</mat-icon>
+        <span class="c-app-button-text">Create Appointment</span>
+      </button>
+
+      <app-date-picker
+        class="c-app-date-picker"
+        [ngClass]="eventContentClass"
+        [selectedDate]="selectedDate"
+        (changeCalendar)="SetSelectedDate($event)"
+      ></app-date-picker>
+    </mat-sidenav>
+
+    <mat-sidenav-content
+      class="c-app-event-container"
+      [ngClass]="eventContentClass"
+    >
+      <router-outlet></router-outlet>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>

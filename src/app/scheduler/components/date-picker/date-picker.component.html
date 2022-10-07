@@ -1,0 +1,7 @@
+<mat-card class="c-app-inline-calendar-card">
+  <mat-calendar
+    #calendar
+    [(selected)]="selected"
+    (selectedChange)="changeDate()"
+  ></mat-calendar>
+</mat-card>
