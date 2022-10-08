@@ -3,7 +3,7 @@ import { DatePickerComponent } from './components/date-picker/date-picker.compon
 import { Router } from '@angular/router'
 import { AppState } from '../app.state'
 
-interface BookType {
+interface CalendarViewType {
   value: string
   viewValue: string
 }
@@ -20,7 +20,7 @@ export class SchedulerComponent implements OnInit {
 
   opened: boolean
   selectedDate: Date
-  types: BookType[] = [
+  types: CalendarViewType[] = [
     { value: 'D', viewValue: 'Day' },
     { value: 'W', viewValue: 'Week' },
   ]
