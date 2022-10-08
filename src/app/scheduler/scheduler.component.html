@@ -12,7 +12,7 @@
 
     <span>Calendar Test</span>
 
-    <button mat-raised-button class="ml-gap--10" (click)="SetToday()">
+    <button mat-raised-button class="ml-gap--10" (click)="setToday()">
       Today
     </button>
 
@@ -20,7 +20,7 @@
       mat-icon-button
       mat-flat-button
       class="c-app-button ml-gap--10"
-      (click)="SetPrevNextDate(false)"
+      (click)="setPrevNextDate(false)"
     >
       <mat-icon>arrow_back_ios_new</mat-icon>
     </button>
@@ -29,7 +29,7 @@
       mat-icon-button
       mat-flat-button
       class="c-app-button ml-gap--10"
-      (click)="SetPrevNextDate(true)"
+      (click)="setPrevNextDate(true)"
     >
       <mat-icon>arrow_forward_ios_new</mat-icon>
     </button>
@@ -44,7 +44,7 @@
       <mat-select
         [(value)]="selectedViewType"
         class="c-app-select--header"
-        (selectionChange)="ChangeViewType()"
+        (selectionChange)="changeViewType()"
       >
         <mat-option *ngFor="let type of types" [value]="type.value">
           {{ type.viewValue }}
@@ -64,6 +64,7 @@
         mat-raised-button
         class="c-app-button"
         [ngClass]="eventContentClass"
+        (click)="createNewAppointment()"
       >
         <mat-icon>add</mat-icon>
         <span class="c-app-button-text">Create Appointment</span>
@@ -73,7 +74,7 @@
         class="c-app-date-picker"
         [ngClass]="eventContentClass"
         [selectedDate]="selectedDate"
-        (changeCalendar)="SetSelectedDate($event)"
+        (changeCalendar)="setSelectedDate($event)"
       ></app-date-picker>
     </mat-sidenav>
 

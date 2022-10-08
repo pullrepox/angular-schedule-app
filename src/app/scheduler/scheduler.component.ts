@@ -1,8 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core'
 import { DatePickerComponent } from './components/date-picker/date-picker.component'
 import { Router } from '@angular/router'
+import { AppState } from '../app.state'
 
-interface NoteType {
+interface BookType {
   value: string
   viewValue: string
 }
@@ -13,10 +14,13 @@ interface NoteType {
   styleUrls: ['./scheduler.component.scss'],
 })
 export class SchedulerComponent implements OnInit {
-  private router
+  private _router
+  private _state
+  stateData: any = {}
+
   opened: boolean
   selectedDate: Date
-  types: NoteType[] = [
+  types: BookType[] = [
     { value: 'D', viewValue: 'Day' },
     { value: 'W', viewValue: 'Week' },
   ]
@@ -25,24 +29,31 @@ export class SchedulerComponent implements OnInit {
   @ViewChild('primaryDatePicker', { static: false })
   primaryDatePicker: DatePickerComponent | undefined
 
-  constructor(router: Router) {
-    this.router = router
+  constructor(router: Router, state: AppState) {
+    this._router = router
+    this._state = state
+
     this.opened = true
     this.selectedDate = new Date()
   }
 
   public ngOnInit() {
     if (this.selectedDate) {
-      this.router.navigate([
-        `/${this.types[
-          this.selectedViewType === 'D' ? 0 : 1
-        ].viewValue.toLowerCase()}/${this.selectedDate.getFullYear()}-${
-          this.selectedDate.getMonth() + 1
-        }-${this.selectedDate.getDate()}`,
-      ])
+      this.updateNavigate(this.selectedDate)
     }
+
+    this._state.currentStateData.subscribe((msg) => this.watchStateData(msg))
+    this._state.changeStateData({
+      ...this.stateData,
+      selDate: this.selectedDate,
+      selType: this.selectedViewType,
+      openNewDialog: false,
+    })
   }
 
+  /**
+   * update class when toggle left side nav
+   */
   get eventContentClass() {
     return {
       'c-app-sidenav-closed': !this.opened,
@@ -56,17 +67,15 @@ export class SchedulerComponent implements OnInit {
    * @param newDate
    * @constructor
    */
-  SetSelectedDate(newDate: Date) {
+  setSelectedDate(newDate: Date) {
     this.selectedDate = newDate
+    this._state.changeStateData({
+      ...this.stateData,
+      selDate: newDate,
+    })
 
     if (newDate) {
-      this.router.navigate([
-        `/${this.types[
-          this.selectedViewType === 'D' ? 0 : 1
-        ].viewValue.toLowerCase()}/${newDate.getFullYear()}-${
-          newDate.getMonth() + 1
-        }-${newDate.getDate()}`,
-      ])
+      this.updateNavigate(newDate)
     }
   }
 
@@ -75,8 +84,8 @@ export class SchedulerComponent implements OnInit {
    *
    * @constructor
    */
-  SetToday() {
-    this.SetSelectedDate(new Date())
+  setToday() {
+    this.setSelectedDate(new Date())
   }
 
   /**
@@ -85,21 +94,57 @@ export class SchedulerComponent implements OnInit {
    * @param plus boolean
    * @constructor
    */
-  SetPrevNextDate(plus: boolean) {
+  setPrevNextDate(plus: boolean) {
     const getCurSelectedDate = plus
       ? new Date(this.selectedDate.getTime() + 1000 * 60 * 60 * 24)
       : new Date(this.selectedDate.getTime() - 1000 * 60 * 60 * 24)
 
-    this.SetSelectedDate(getCurSelectedDate)
+    this.setSelectedDate(getCurSelectedDate)
   }
 
-  ChangeViewType() {
-    this.router.navigate([
+  /**
+   * Change book type
+   * @constructor
+   */
+  changeViewType() {
+    this._state.changeStateData({
+      ...this.stateData,
+      selType: this.selectedViewType,
+    })
+
+    this.updateNavigate(this.selectedDate)
+  }
+
+  /**
+   * Update navigate when changing date and book type
+   * @param currDate
+   * @constructor
+   */
+  updateNavigate(currDate: Date) {
+    this._router.navigate([
       `/${this.types[
         this.selectedViewType === 'D' ? 0 : 1
-      ].viewValue.toLowerCase()}/${this.selectedDate.getFullYear()}-${
-        this.selectedDate.getMonth() + 1
-      }-${this.selectedDate.getDate()}`,
+      ].viewValue.toLowerCase()}/${currDate.getFullYear()}-${
+        currDate.getMonth() + 1
+      }-${currDate.getDate()}`,
     ])
+  }
+
+  /**
+   * Open new appointment create dialog
+   */
+  createNewAppointment() {
+    this._state.changeStateData({
+      ...this.stateData,
+      openNewDialog: true,
+    })
+  }
+
+  /**
+   * watch global state data
+   * @param msg
+   */
+  watchStateData(msg: any) {
+    this.stateData = msg
   }
 }

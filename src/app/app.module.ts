@@ -8,7 +8,6 @@ import { AppRoutingModule } from './app-routing.module'
 import { AppComponent } from './app.component'
 import { MatNativeDateModule } from '@angular/material/core'
 import { HttpClientModule } from '@angular/common/http'
-import { AppState } from './app.service'
 
 @NgModule({
   declarations: [AppComponent],
@@ -22,7 +21,7 @@ import { AppState } from './app.service'
     CustomMaterialModule,
     ReactiveFormsModule,
   ],
-  providers: [AppState],
+  providers: [],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
