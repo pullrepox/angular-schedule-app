@@ -143,6 +143,15 @@ export class SchedulerComponent implements OnInit {
    * @param msg
    */
   watchStateData(msg: any) {
+    const oldStateData = Object.assign({}, this.stateData)
+
     this.stateData = msg
+
+    if (oldStateData.selType !== this.stateData.selType) {
+      this.selectedDate = this.stateData.selDate
+      this.selectedViewType = this.stateData.selType
+
+      this.updateNavigate(this.stateData.selDate)
+    }
   }
 }

@@ -79,12 +79,21 @@ export class AppointmentComponent implements OnInit {
     return hours
   }
 
+  /**
+   * set active date
+   *
+   * @param d
+   */
   getHeaderColor(d: number) {
     const curr = new Date(this.stateData.selDate.getTime())
 
     return curr.getDate() === d ? 'primary' : ''
   }
 
+  /**
+   * Get week headers
+   * @param d
+   */
   getWeekHeaders(d: number) {
     const weeks = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT']
 
@@ -95,5 +104,24 @@ export class AppointmentComponent implements OnInit {
     }
 
     return weeks[d]
+  }
+
+  /**
+   * Update selected date and type if clicking date of header when view type is week
+   * @param d
+   */
+  updateSelDate(d: number) {
+    if (this.stateData.selType === 'D') {
+      return
+    }
+
+    const curr = new Date(this.stateData.selDate.getTime())
+    curr.setDate(d)
+
+    this._state.changeStateData({
+      ...this.stateData,
+      selType: 'D',
+      selDate: curr,
+    })
   }
 }
