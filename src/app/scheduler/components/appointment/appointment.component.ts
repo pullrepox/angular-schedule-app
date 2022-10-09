@@ -29,4 +29,71 @@ export class AppointmentComponent implements OnInit {
   watchStateData(msg: any) {
     this.stateData = msg
   }
+
+  /**
+   * Calc week dates for calendar header
+   */
+  get calcWeekDates() {
+    let week = []
+    const curr = new Date(this.stateData.selDate.getTime())
+
+    if (this.stateData.selType === 'D') {
+      return [curr.getDate()]
+    }
+
+    for (let i = 0; i <= 6; i++) {
+      let first = curr.getDate() - curr.getDay() + i
+      const day = new Date(curr.setDate(first)).getDate()
+      week.push(day)
+    }
+
+    return week
+  }
+
+  /**
+   * compute cols by selected calendar type
+   */
+  get computeCols() {
+    return this.stateData.selType === 'D' ? 1 : 7
+  }
+
+  get localTimeZone() {
+    const timezone: any = new Date().toString().match(/([A-Z]+[+-][0-9]+)/)
+
+    return timezone ? timezone[0].slice(0, 6) : ''
+  }
+
+  get timeList() {
+    let hours: any = []
+
+    for (let t = 1; t < 12; t++) {
+      hours.push(`${t} AM`)
+    }
+
+    hours.push('12 PM')
+
+    for (let t = 1; t < 12; t++) {
+      hours.push(`${t} PM`)
+    }
+
+    return hours
+  }
+
+  getHeaderColor(d: number) {
+    const curr = new Date(this.stateData.selDate.getTime())
+
+    return curr.getDate() === d ? 'primary' : ''
+  }
+
+  getWeekHeaders(d: number) {
+    const weeks = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT']
+
+    if (this.stateData.selType === 'D') {
+      const curr = new Date(this.stateData.selDate.getTime())
+
+      return weeks[curr.getDay()]
+    }
+
+    return weeks[d]
+  }
 }

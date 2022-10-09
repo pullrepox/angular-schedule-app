@@ -124,9 +124,7 @@ export class SchedulerComponent implements OnInit {
     this._router.navigate([
       `/${this.types[
         this.selectedViewType === 'D' ? 0 : 1
-      ].viewValue.toLowerCase()}/${currDate.getFullYear()}-${
-        currDate.getMonth() + 1
-      }-${currDate.getDate()}`,
+      ].viewValue.toLowerCase()}/${currDate.toISOString().slice(0, 10)}`,
     ])
   }
 

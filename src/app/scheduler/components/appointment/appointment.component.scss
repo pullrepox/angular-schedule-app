@@ -3,4 +3,90 @@
   height: calc(100vh - 84px);
   display: block;
   overflow: hidden;
+  position: relative;
+
+  .c-app-book-left-corner {
+    width: 48px;
+    font-size: 12px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+    height: 84px;
+    color: #909090;
+  }
+
+  .c-app-book-space {
+    width: 8px;
+    height: 100%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+  }
+
+  .c-app-book-grid-list {
+    width: calc(100% - 96px);
+  }
+
+  .c-app-book-header {
+    position: absolute;
+    height: 84px;
+    width: 100%;
+    margin-bottom: 0;
+    display: flex;
+    border-bottom: 1px solid #e0e0e0;
+
+    .c-app-book-header-title {
+      max-width: 14.7%;
+
+      .c-app-ver-divider {
+        width: 1px;
+        height: 20px;
+        background-color: #e0e0e0;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+      }
+
+      .c-app-header-title-label {
+        flex: 1 1 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        .c-app-header-week-label {
+          font-size: 14px;
+        }
+      }
+    }
+  }
+
+  .c-app-book-content {
+    overflow-y: auto;
+    height: calc(100vh - 188px);
+    max-height: calc(100vh - 188px);
+    margin-top: 84px;
+    width: 100%;
+
+    .c-app-book-content-list {
+      display: flex;
+
+      .c-app-book-space {
+        border-bottom: 1px solid #e0e0e0;
+        border-right: 1px solid #e0e0e0;
+        height: 84px;
+      }
+
+      .c-app-book-content-grid-list {
+        width: calc(100% - 56px);
+        border-bottom: 1px solid #e0e0e0;
+
+        .c-app-appointment-description {
+          width: 100%;
+          height: 84px;
+          min-width: 14.7%;
+          border-right: 1px solid #e0e0e0;
+        }
+      }
+    }
+  }
 }

@@ -1,1 +1,49 @@
-<div class="c-app-appointment-content">Hey</div>
+<mat-card class="c-app-appointment-content">
+  <mat-card-title class="c-app-book-header">
+    <div class="c-app-book-left-corner">
+      <div>{{ localTimeZone }}</div>
+    </div>
+    <div class="c-app-book-space">
+      <div class="c-app-book-space-line"></div>
+    </div>
+    <mat-grid-list
+      cols="{{ computeCols }}"
+      rowHeight="84px"
+      class="c-app-book-grid-list"
+    >
+      <mat-grid-tile
+        *ngFor="let d of calcWeekDates; let indexOfElement = index"
+        class="c-app-book-header-title"
+      >
+        <div class="c-app-ver-divider"></div>
+        <div class="c-app-header-title-label">
+          <div class="c-app-header-week-label">
+            {{ getWeekHeaders(indexOfElement) }}
+          </div>
+          <button mat-mini-fab color="{{ getHeaderColor(d) }}">{{ d }}</button>
+        </div>
+      </mat-grid-tile>
+    </mat-grid-list>
+  </mat-card-title>
+  <mat-card-content class="c-app-book-content">
+    <div *ngFor="let t of timeList" class="c-app-book-content-list">
+      <div class="c-app-book-left-corner">
+        <div>{{ t }}</div>
+      </div>
+      <div class="c-app-book-space">
+        <div class="c-app-book-space-line"></div>
+      </div>
+      <mat-grid-list
+        cols="{{ computeCols }}"
+        rowHeight="84px"
+        class="c-app-book-content-grid-list"
+      >
+        <mat-grid-tile
+          *ngFor="let d of calcWeekDates; let indexOfElement = index"
+        >
+          <div class="c-app-appointment-description"></div>
+        </mat-grid-tile>
+      </mat-grid-list>
+    </div>
+  </mat-card-content>
+</mat-card>
