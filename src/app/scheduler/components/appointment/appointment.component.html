@@ -49,7 +49,6 @@
     >
       <mat-grid-tile
         *ngFor="let d of calcWeekDates; let indexOfElement = index"
-        cdkDropList
       >
         <div class="c-app-grid-time-list" aria-hidden="true">
           <div *ngFor="let t of timeList" class="c-app-book-content-list">
@@ -60,6 +59,34 @@
           class="c-app-appointment-description"
           (click)="openDialog($event, indexOfElement)"
         >
+          <div
+            *ngIf="appointmentList[getAppointDate(indexOfElement)]"
+            class="c-app-appointment-list"
+            cdkDropList
+            (cdkDropListDropped)="drop($event, indexOfElement)"
+            [cdkDropListData]="appointmentList[getAppointDate(indexOfElement)]"
+          >
+            <button
+              *ngFor="
+                let appoint of appointmentList[getAppointDate(indexOfElement)];
+                let i = index
+              "
+              mat-raised-button
+              color="primary"
+              class="c-app-appointment-button"
+              [ngStyle]="{ top: appoint.top }"
+              (click)="clickAppointment($event, indexOfElement, appoint, i)"
+              cdkDragBoundary=".c-app-book-content-grid-list"
+              cdkDrag
+              (cdkDragMoved)="onDragMove($event)"
+              (cdkDragEnded)="onDragEnded($event, appoint)"
+              (mousedown)="getOffset($event)"
+            >
+              {{ appoint.data.title }} {{ appoint.data.timeStr[0] }} ~
+              {{ appoint.data.timeStr[1] }}
+              {{ appoint.data.description }}
+            </button>
+          </div>
           <button
             *ngIf="
               tempAppointment[indexOfElement] &&
@@ -97,7 +124,7 @@
     cdkDrag
     cdkDragRootElement=".cdk-overlay-pane"
   >
-    <h3 mat-dialog-title>Add Appointment</h3>
+    <h3 mat-dialog-title>{{ editFlag ? '' : 'Add ' }}Appointment</h3>
     <div mat-dialog-content>
       <mat-form-field appearance="fill" class="c-app-dialog-form-field">
         <mat-label>Title</mat-label>
@@ -166,12 +193,24 @@
       </mat-form-field>
     </div>
     <div mat-dialog-actions>
-      <button mat-raised-button (click)="ngOnDestroy()">Cancel</button>
+      <button *ngIf="!editFlag" mat-raised-button (click)="ngOnDestroy()">
+        Cancel
+      </button>
       <button
+        *ngIf="editFlag"
+        mat-raised-button
+        color="warn"
+        (click)="deleteAppointment()"
+      >
+        Delete
+      </button>
+      <button
+        *ngIf="!editFlag"
         mat-raised-button
         color="primary"
         cdkFocusInitial
         class="c-app-appointment-temp-save"
+        (click)="saveTempEditData()"
       >
         Save
       </button>

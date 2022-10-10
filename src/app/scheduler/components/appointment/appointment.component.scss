@@ -126,6 +126,20 @@
         display: block;
         position: relative;
 
+        .c-app-appointment-list {
+          width: 100%;
+          height: 100%;
+          display: block;
+          position: relative;
+
+          .c-app-appointment-button {
+            overflow: hidden;
+            display: block;
+            max-width: 100%;
+            text-overflow: ellipsis;
+          }
+        }
+
         .c-app-appointment-button {
           height: 45px;
           width: 100%;
