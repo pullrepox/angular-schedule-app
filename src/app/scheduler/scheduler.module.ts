@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common'
 import { NgModule } from '@angular/core'
-import { FormsModule } from '@angular/forms'
+import { FormsModule, ReactiveFormsModule } from '@angular/forms'
 
 import { CustomMaterialModule } from '../core/material.module'
 import { SchedulerComponent } from './scheduler.component'
@@ -11,7 +11,13 @@ import { AppState } from '../app.state'
 
 @NgModule({
   declarations: [SchedulerComponent, DatePickerComponent, AppointmentComponent],
-  imports: [SchedulerRoutes, CommonModule, FormsModule, CustomMaterialModule],
+  imports: [
+    SchedulerRoutes,
+    CommonModule,
+    FormsModule,
+    CustomMaterialModule,
+    ReactiveFormsModule,
+  ],
   providers: [AppState],
 })
 export class SchedulerModule {

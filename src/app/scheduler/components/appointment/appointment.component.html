@@ -23,7 +23,7 @@
           <button
             mat-mini-fab
             color="{{ getHeaderColor(d) }}"
-            (click)="updateSelDate(d)"
+            (click)="updateSelDate(indexOfElement)"
           >
             {{ d }}
           </button>
@@ -45,17 +45,136 @@
       cols="{{ computeCols }}"
       rowHeight="1103px"
       class="c-app-book-content-grid-list"
+      cdkDropListGroup
     >
       <mat-grid-tile
         *ngFor="let d of calcWeekDates; let indexOfElement = index"
+        cdkDropList
       >
         <div class="c-app-grid-time-list" aria-hidden="true">
           <div *ngFor="let t of timeList" class="c-app-book-content-list">
             <div class="c-app-book-timeline"></div>
           </div>
         </div>
-        <div class="c-app-appointment-description"></div>
+        <div
+          class="c-app-appointment-description"
+          (click)="openDialog($event, indexOfElement)"
+        >
+          <button
+            *ngIf="
+              tempAppointment[indexOfElement] &&
+              tempAppointment[indexOfElement]['showButton']
+            "
+            mat-raised-button
+            color="primary"
+            class="c-app-appointment-button"
+            [ngStyle]="{ top: tempAppointment[indexOfElement]['top'] }"
+          >
+            <div class="c-app-appointment-button--title">
+              {{
+                tempAppointment[indexOfElement]['title'] !== ''
+                  ? tempAppointment[indexOfElement]['title']
+                  : 'No Title'
+              }}
+            </div>
+            <div class="c-app-appointment-button--description">
+              {{ tempAppointment[indexOfElement]['description'] }}
+            </div>
+            <div class="c-app-appointment-button--time">
+              {{ tempAppointment[indexOfElement]['timeStr'][0] }} -
+              {{ tempAppointment[indexOfElement]['timeStr'][1] }}
+            </div>
+          </button>
+        </div>
       </mat-grid-tile>
     </mat-grid-list>
   </mat-card-content>
 </mat-card>
+
+<ng-template #editDialogTemplate>
+  <div
+    class="c-app-dialog-content"
+    cdkDrag
+    cdkDragRootElement=".cdk-overlay-pane"
+  >
+    <h3 mat-dialog-title>Add Appointment</h3>
+    <div mat-dialog-content>
+      <mat-form-field appearance="fill" class="c-app-dialog-form-field">
+        <mat-label>Title</mat-label>
+        <input
+          matInput
+          [(ngModel)]="tempAppointment[selectedD]['title']"
+          autofocus
+        />
+      </mat-form-field>
+
+      <div class="c-app-dialog-date-time-field">
+        <mat-form-field
+          appearance="fill"
+          class="c-app-dialog-date-filter-field"
+        >
+          <mat-label>Choose Date</mat-label>
+          <input
+            matInput
+            [matDatepicker]="picker1"
+            [formControl]="tempAppointment[selectedD]['date']"
+            (dateChange)="changeDatePicker($event)"
+          />
+          <mat-datepicker-toggle
+            matSuffix
+            [for]="picker1"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #picker1></mat-datepicker>
+        </mat-form-field>
+        <mat-form-field
+          appearance="fill"
+          class="c-app-dialog-time-filter-field"
+        >
+          <mat-label>Choose Time</mat-label>
+          <mat-select
+            [(value)]="tempAppointment[selectedD]['timeRange'][0]"
+            (selectionChange)="changeTimePicker(0)"
+          >
+            <mat-option *ngFor="let h of timePickerList" [value]="h">
+              {{ h }}:00
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field
+          appearance="fill"
+          class="c-app-dialog-time-filter-field"
+        >
+          <mat-label>Choose Time</mat-label>
+          <mat-select
+            [(value)]="tempAppointment[selectedD]['timeRange'][1]"
+            (selectionChange)="changeTimePicker(1)"
+          >
+            <mat-option *ngFor="let h of timePickerList" [value]="h">
+              {{ h }}:00
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <mat-form-field appearance="fill" class="c-app-dialog-form-field">
+        <mat-label>Description</mat-label>
+        <textarea
+          matInput
+          rows="6"
+          [(ngModel)]="tempAppointment[selectedD]['description']"
+        ></textarea>
+      </mat-form-field>
+    </div>
+    <div mat-dialog-actions>
+      <button mat-raised-button (click)="ngOnDestroy()">Cancel</button>
+      <button
+        mat-raised-button
+        color="primary"
+        cdkFocusInitial
+        class="c-app-appointment-temp-save"
+      >
+        Save
+      </button>
+    </div>
+  </div>
+</ng-template>

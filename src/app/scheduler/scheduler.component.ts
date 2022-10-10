@@ -38,10 +38,6 @@ export class SchedulerComponent implements OnInit {
   }
 
   public ngOnInit() {
-    if (this.selectedDate) {
-      this.updateNavigate(this.selectedDate)
-    }
-
     this._state.currentStateData.subscribe((msg) => this.watchStateData(msg))
     this._state.changeStateData({
       ...this.stateData,
@@ -49,6 +45,10 @@ export class SchedulerComponent implements OnInit {
       selType: this.selectedViewType,
       openNewDialog: false,
     })
+
+    if (this.selectedDate) {
+      this.updateNavigate(this.selectedDate)
+    }
   }
 
   /**
@@ -147,7 +147,10 @@ export class SchedulerComponent implements OnInit {
 
     this.stateData = msg
 
-    if (oldStateData.selType !== this.stateData.selType) {
+    if (
+      oldStateData.selType !== msg.selType ||
+      msg.selDate !== oldStateData.selDate
+    ) {
       this.selectedDate = this.stateData.selDate
       this.selectedViewType = this.stateData.selType
 
